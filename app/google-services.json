@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "515348102504",
+    "firebase_url": "https://ktu-copy-scanne.firebaseio.com",
+    "project_id": "ktu-copy-scanne",
+    "storage_bucket": "ktu-copy-scanne.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515348102504:android:7ceec7df13283c50",
+        "android_client_info": {
+          "package_name": "ktu.solution.ilpinnovations.tcs.ktucopyscanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515348102504-tnd4igses306armd9ofilssn8p1k7jrg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALTvUbXAlLo8rWABtOjXzQY6OVajuL_0o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
