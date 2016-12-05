@@ -1,6 +1,7 @@
 package ktu.solution.ilpinnovations.tcs.ktucopyscanner.activitites;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,10 +29,12 @@ import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,8 @@ import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.SaveImageAsync;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.Timmings;
 
 public class CopyScannerActivity extends AppCompatActivity {
+
+    public static boolean FLAG = false;
 
     private static final String TAG = "MYTAG";
     private PreviewImage preview;
@@ -234,7 +240,10 @@ public class CopyScannerActivity extends AppCompatActivity {
             preview.mCamera.autoFocus(new Camera.AutoFocusCallback() {
                 public void onAutoFocus(boolean success, Camera camera) {
                     if (success) {
+                        Log.i("TAG", "onSuccess");
                         camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+
+//                        FLAG = true;
                     }
                 }
             });
@@ -290,14 +299,17 @@ public class CopyScannerActivity extends AppCompatActivity {
 
     Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
         public void onShutter() {
+            Log.i("TAG", "onShutter");
         }
     };
     Camera.PictureCallback rawCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
+            Log.i("TAG", "onRawCallback");
         }
     };
     Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
+            Log.i("TAG", "onJpegCallback");
             try {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 bitmap = rotateBitmap(bitmap, 180f);
@@ -308,6 +320,7 @@ public class CopyScannerActivity extends AppCompatActivity {
                 saveImageToDisk(bitmap);
                 resetCam();
                 mButton.setEnabled(true);
+                FLAG = false;
             } catch (Exception e) {
                 Log.d("BITMAP ERROR ", "Error while  decoding bitmap");
                 e.printStackTrace();
@@ -448,6 +461,34 @@ public class CopyScannerActivity extends AppCompatActivity {
                     alertDialog.show();
 
 
+                }
+            });
+
+            viewHolder.imageThumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog builder = new Dialog(CopyScannerActivity.this);
+                    builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    builder.getWindow().setBackgroundDrawable(
+                            new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            //nothing;
+                        }
+                    });
+
+                    ImageView imageView = new ImageView(CopyScannerActivity.this);
+
+                    //below code fulfill the requirement of xml layout file for dialog popup
+                    builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                    LoadImageAsyncTask loadImageAsyncTask = new LoadImageAsyncTask(CopyScannerActivity.this, imageView);
+                    loadImageAsyncTask.execute(images.get(i));
+
+                    builder.show();
                 }
             });
         }

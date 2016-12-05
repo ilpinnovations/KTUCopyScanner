@@ -18,14 +18,14 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper {
     protected Phrase watermark = new Phrase("KTU Confidential", new Font(Font.FontFamily.HELVETICA, 20, Font.NORMAL, BaseColor.LIGHT_GRAY));
 
     public void onStartPage(PdfWriter writer, Document document) {
-        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("KTU Confidentail Document"), 30, 800, 0);
-        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("KTU Confidentail Document"), 550, 800, 0);
+//        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("KTU Confidentail Document"), 30, 800, 0);
+//        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("KTU Confidentail Document"), 550, 800, 0);
     }
 
     public void onEndPage(PdfWriter writer, Document document) {
-        PdfContentByte canvas = writer.getDirectContent();
-        ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, watermark, 298, 221, 45);
-        ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, watermark, 458, 381, 45);
+//        PdfContentByte canvas = writer.getDirectContent();
+//        ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, watermark, 298, 221, 45);
+//        ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, watermark, 458, 381, 45);
 
     }
 

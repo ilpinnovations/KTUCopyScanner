@@ -2,7 +2,9 @@ package ktu.solution.ilpinnovations.tcs.ktucopyscanner.activitites;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,9 +13,12 @@ import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.FormDataBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.UserBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.R;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.AppConstants;
+import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.LogManager;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.ManageSharedPreferences;
 
 public class SignInActivity extends AppCompatActivity {
+    private static final String TAG = SignInActivity.class.getSimpleName();
+
     private EditText lecturerIdEditText, lecturerNameEditText, hallNumberEditText, examIdEditText, passwordEditText;
     private Button submitButton;
     private UserBean userBean;
@@ -62,6 +67,11 @@ public class SignInActivity extends AppCompatActivity {
                 userBean.setLecturerName(formDataBean.getLecturerName());
                 userBean.setHallNumber(formDataBean.getHallNumber());
                 userBean.setExamId(formDataBean.getExamId());
+
+                LogManager manager = new LogManager(getApplicationContext());
+                String file_name = manager.createLog(userBean.getExamId(), userBean.getLecturerId());
+
+                Log.i(TAG, "External Storage Dir: " + Environment.getExternalStorageDirectory().getPath() + "\nStorage: " + Environment.getDataDirectory().getPath());
 
                 ManageSharedPreferences.saveUserDetails(SignInActivity.this, userBean);
                 Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
