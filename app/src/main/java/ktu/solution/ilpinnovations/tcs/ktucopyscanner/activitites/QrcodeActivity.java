@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.QRCodeBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.R;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.db.DBHelper;
+import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.LogManager;
 
 public class QrcodeActivity extends AppCompatActivity {
 
@@ -27,11 +28,23 @@ public class QrcodeActivity extends AppCompatActivity {
     private CustomAdapter mAdapter;
     int numOfPdfs = 0;
     DBHelper dbHelper;
+    private LogManager manager;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // generating home activity log
+        String log = "Launching View Images activity!";
+        manager.appendData(log);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
+
+        manager = new LogManager(getApplicationContext());
+
         recyclerView = (RecyclerView) findViewById(R.id.qrcodeList);
 
         Display display = getWindowManager().getDefaultDisplay();

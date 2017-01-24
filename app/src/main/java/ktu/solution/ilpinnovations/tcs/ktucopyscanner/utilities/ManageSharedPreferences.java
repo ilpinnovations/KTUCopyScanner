@@ -11,12 +11,16 @@ import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.UserBean;
 public class ManageSharedPreferences {
 
     private static final String SHAREDPREFERENCENAME = "KTU_PREFS";
+    private static final String PERSISTENTSHAREDPREFERENCE = "KTU_PERSISTENT_PREFS";
     private static final String KEY_LECTURERID = "LecturerId";
     private static final String KEY_LECTURERNAME = "LecturerName";
     private static final String KEY_HALLNUMBER = "HallNumber";
     private static final String KEY_EXAMID = "ExamId";
     private static final String KEY_NUMPDFS = "NUMPDFs";
     private static final String KEY_NUMPDFS_SYNCED = "NumPDFsSynced";
+    private static final String KEY_LOG_FILE_NAME = "LogFile";
+    private static final String KEY_LOG_DATE = "LogDate";
+    private static final String KEY_LAST_SYNCED = "LastSynced";
 
 
     public static Boolean saveUserDetails(Context context, UserBean userBean) {
@@ -74,5 +78,50 @@ public class ManageSharedPreferences {
     public static String getNumPFS(Context context) {
         SharedPreferences sharedpreferences = context.getSharedPreferences(SHAREDPREFERENCENAME, context.MODE_PRIVATE);
         return sharedpreferences.getString(KEY_NUMPDFS, "");
+    }
+
+    public static String getLogFileName(Context context) {
+        String fileName;
+        SharedPreferences sharedpreferences = context.getSharedPreferences(PERSISTENTSHAREDPREFERENCE, context.MODE_PRIVATE);
+        fileName = sharedpreferences.getString(KEY_LOG_FILE_NAME, "");
+        return fileName;
+    }
+
+    public static Boolean saveLogFileName(Context context, String fileName) {
+        SharedPreferences sharedpreferences = context.getSharedPreferences(PERSISTENTSHAREDPREFERENCE, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(KEY_LOG_FILE_NAME, fileName);
+        editor.apply();
+        return true;
+    }
+
+    public static String getLogDate(Context context) {
+        String date;
+        SharedPreferences sharedpreferences = context.getSharedPreferences(PERSISTENTSHAREDPREFERENCE, context.MODE_PRIVATE);
+        date = sharedpreferences.getString(KEY_LOG_DATE, "");
+        return date;
+    }
+
+    public static Boolean saveLogDate(Context context, String date) {
+        SharedPreferences sharedpreferences = context.getSharedPreferences(PERSISTENTSHAREDPREFERENCE, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(KEY_LOG_DATE, date);
+        editor.apply();
+        return true;
+    }
+
+    public static String getLastSynced(Context context) {
+        String time;
+        SharedPreferences sharedpreferences = context.getSharedPreferences(PERSISTENTSHAREDPREFERENCE, context.MODE_PRIVATE);
+        time = sharedpreferences.getString(KEY_LAST_SYNCED, "");
+        return time;
+    }
+
+    public static Boolean saveLastSynced(Context context, String time) {
+        SharedPreferences sharedpreferences = context.getSharedPreferences(PERSISTENTSHAREDPREFERENCE, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(KEY_LAST_SYNCED, time);
+        editor.apply();
+        return true;
     }
 }

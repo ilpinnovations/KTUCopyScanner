@@ -9,6 +9,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -28,10 +34,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
+import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.CenterStats;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.ImageBean;
+import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.PdfSyncBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.QRCodeBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.UserBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.db.DBHelper;
@@ -99,9 +111,25 @@ public class GeneratePDFAsyncTask extends AsyncTask<Void, Void, String> {
                 addTitlePage(document, qrCodeBean.getBarcode());
                 addContent(document, images);
 
+//                PdfSyncBean bean = new PdfSyncBean();
+//
+//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+//                String ts = formatter.format(new Date());
+//
+//                bean.setTimestamp(ts);
+//                bean.setInvigilatorID(qrCodeBean.getInvigilatorId());
+//                bean.setIsPdfSynced(false);
+//                bean.setPdfName(qrCodeBean.getBarcode() + "_" + "_" + qrCodeBean.getInvigilatorId() + ".pdf");
+//                bean.setBarcode(qrCodeBean.getBarcode());
+//                bean.setSizeOfPdf(String.valueOf(file.length()));
+//
+//                DBHelper db = new DBHelper(context);
+//                int id = db.insertPdfSync(bean);
 
                 document.close();
             }
+
+
 
             ManageSharedPreferences.saveNumPdfs(context, i);
             len = String.valueOf(dir.length());

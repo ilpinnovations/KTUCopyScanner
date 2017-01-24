@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.zxing.Result;
 
+import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.LogManager;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
@@ -14,10 +15,17 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 public class QRCodeScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
+    private LogManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        manager = new LogManager(getApplicationContext());
+        // generating home activity log
+        String log = "Launching QR Code Scanner activity!";
+        manager.appendData(log);
+
         qrScanner();
     }
 

@@ -50,45 +50,48 @@ public class UploadDataOnServer extends AsyncTask<Void, Void, Void> {
         File dir = new File(path);
         String[] files = dir.list();
         int i = 0;
-        for (String f : files) {
-            ++i;
-            path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/exam/data/copies/";
-            Log.d(TAG, "File: " + path);
-            Uri file = Uri.fromFile(new File(path + f));
 
-            StorageMetadata metadata = new StorageMetadata.Builder()
-                    .setContentType("application/pdf")
-                    .build();
+        if (files != null){
+            for (String f : files) {
+                ++i;
+                path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/exam/data/copies/";
+                Log.d(TAG, "File: " + path);
+                Uri file = Uri.fromFile(new File(path + f));
+
+                StorageMetadata metadata = new StorageMetadata.Builder()
+                        .setContentType("application/pdf")
+                        .build();
 
 
-            UploadTask uploadTask = storageRef.child("exam_pdfs/" + file.getLastPathSegment()).putFile(file, metadata);
-            Log.d(TAG, "Uploading task");
-            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    System.out.println("Upload is " + progress + "% done");
-                    Log.d(TAG, "Progress: " + progress);
-                }
-            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-                    System.out.println("Upload is paused");
-                    Log.d(TAG, "Upload is paused");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.d(TAG, "Upload failed");
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-                    Log.d("Upload Data success", String.valueOf(downloadUrl));
-                }
-            });
+                UploadTask uploadTask = storageRef.child("exam_pdfs/" + file.getLastPathSegment()).putFile(file, metadata);
+                Log.d(TAG, "Uploading task");
+                uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        System.out.println("Upload is " + progress + "% done");
+                        Log.d(TAG, "Progress: " + progress);
+                    }
+                }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                        System.out.println("Upload is paused");
+                        Log.d(TAG, "Upload is paused");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.d(TAG, "Upload failed");
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+                        Log.d("Upload Data success", String.valueOf(downloadUrl));
+                    }
+                });
 
+            }
         }
 
         ManageSharedPreferences.saveNumPdfsSynced(context, i);

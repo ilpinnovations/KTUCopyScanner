@@ -100,7 +100,7 @@
                     android:background="@drawable/edit_text_style"
                     android:cursorVisible="true"
                     android:ellipsize="start"
-                    android:hint="Centre Code"
+                    android:hint="Centre ID"
                     android:inputType="text"
                     android:paddingLeft="10dp"
                     android:textColor="@color/colorAccent"

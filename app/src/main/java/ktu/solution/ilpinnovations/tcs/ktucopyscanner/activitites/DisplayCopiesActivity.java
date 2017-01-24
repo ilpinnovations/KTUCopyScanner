@@ -20,6 +20,7 @@ import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.ImageBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.R;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.db.DBHelper;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.DisplayImagesAsyncTask;
+import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.LogManager;
 
 public class DisplayCopiesActivity extends AppCompatActivity {
     private String TAG = "DISPLAYCOPIES";
@@ -29,11 +30,23 @@ public class DisplayCopiesActivity extends AppCompatActivity {
     DBHelper dbHelper;
     private TextView statusText;
     private String barcodeValue;
+    private LogManager manager;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // generating home activity log
+        String log = "Displaying images!";
+        manager.appendData(log);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_copies);
+
+        manager = new LogManager(getApplicationContext());
+
         dbHelper = new DBHelper(DisplayCopiesActivity.this);
 
         Bundle extras = getIntent().getExtras();

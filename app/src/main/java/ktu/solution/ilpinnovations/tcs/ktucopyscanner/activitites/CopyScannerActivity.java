@@ -50,6 +50,7 @@ import ktu.solution.ilpinnovations.tcs.ktucopyscanner.Beans.UserBean;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.R;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.db.DBHelper;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.LoadImageAsyncTask;
+import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.LogManager;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.ManageSharedPreferences;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.SaveImageAsync;
 import ktu.solution.ilpinnovations.tcs.ktucopyscanner.utilities.Timmings;
@@ -76,11 +77,14 @@ public class CopyScannerActivity extends AppCompatActivity {
     public final String APP_TAG = "MyCustomApp";
     private String statusTextContent = "No copies scanned";
     private CustomAdapter mAdapter;
+    private LogManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_copy_scanner);
+
+        manager = new LogManager(getApplicationContext());
 
         if (savedInstanceState == null) {
             images = new ArrayList<>();
@@ -131,6 +135,10 @@ public class CopyScannerActivity extends AppCompatActivity {
         mButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // generating image click log
+                String log = "Taking photo from the camera!";
+                manager.appendData(log);
+
                 if (images.size() > 0) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CopyScannerActivity.this);
                     alertDialogBuilder.setMessage("You have scanned " + images.size() + " copies, do you want to proceed?");
@@ -184,6 +192,10 @@ public class CopyScannerActivity extends AppCompatActivity {
         mButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // generating home activity log
+                String log = "Submitting clicked photos!";
+                manager.appendData(log);
+
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CopyScannerActivity.this);
                 alertDialogBuilder.setMessage("Do you want to submit the images scanned ? This action cannot be rolled back. ");
 
@@ -192,6 +204,11 @@ public class CopyScannerActivity extends AppCompatActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         arg0.dismiss();
                         System.gc();
+
+                        DBHelper dbHelper = new DBHelper(getApplicationContext());
+                        UserBean bean = ManageSharedPreferences.getUserDetails(getApplicationContext());
+                        dbHelper.insertCenterStats(bean.getExamId());
+
                         Intent intent = new Intent(CopyScannerActivity.this, QRCodeScannerActivity.class);
                         startActivityForResult(intent, 2);
                     }
@@ -259,6 +276,11 @@ public class CopyScannerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // generating copy Scanner activity log
+        String log = "Launching Copy Scanner activity!";
+        manager.appendData(log);
+
         if (flag) {
             toggleViews();
             displayPreviewImages();
